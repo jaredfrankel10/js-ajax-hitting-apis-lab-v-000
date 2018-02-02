@@ -18,16 +18,16 @@ function getRepositories() {
        arrOfRepos = JSON.parse(this.responseText)
     };
     let repoList = '<ul>'
-  
+
     for (var i = 0; i < arrOfRepos.length; i++) {
       repoList += `<li><a href="${arrOfRepos[i].html_url}">See at GitHub</a> - - ${arrOfRepos[i].name} - <a href="#" data-repository="${arrOfRepos[i].name}" onclick="getCommits(this)">Get Commits</a> - - <a href="#" data-repo="${arrOfRepos[i].name}" data-username="${arrOfRepos[i].owner.login}" onclick="getBranches(this)">Get Branches</a></li>`;
     }
-  
+
     repoList += '</ul>'
-  
+
     document.getElementById('repositories').innerHTML = repoList
   }
-  
+
   function getCommits(linkEl) {
     const repo = linkEl.dataset.repository
     const username = linkEl.dataset.username
@@ -36,11 +36,11 @@ function getRepositories() {
     req.open("GET", `https://api.github.com/repos/${username}/${repo}/commits`)
     req.send()
   }
-  
+
   function displayCommits() {
     const commits = JSON.parse(this.responseText)
     let html = `<ul>`
-  
+
     for (var i = 0; i < commits.length; i++) {
       if (commits[i].author) {
         html += `<li> - - ${commits[i].commit.author.name} - - ${commits[i].author.login} - ${commits[i].commit.message}</li>`
@@ -48,14 +48,14 @@ function getRepositories() {
         html += `<li>--- Unknown - ${commits[i].commit.message}</li>`
       }
     }
-  
+
     html += `</ul>`
-  
+
     document.getElementById('details').innerHTML = html
   }
-  
+
   function getBranches(linkEl) {
-  
+
     const repo = linkEl.dataset.repository
     const username = linkEl.dataset.username
     const req = new XMLHttpRequest()
@@ -63,7 +63,7 @@ function getRepositories() {
     req.open('GET', `https://api.github.com/repos/${username}/${repo}/branches`)
     req.send()
   }
-  
+
   function displayBranches() {
     const arrOfBranches = JSON.parse(this.responseText)
     let html = `<ul>`
